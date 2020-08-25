@@ -21,5 +21,13 @@ class TaskView(View):
         bound_form = TaskForm(request.POST)
         if bound_form.is_valid():
             new_task = bound_form.save()
-            return JsonResponse({'newTask':model_to_dit(new_task)}, status=200)
+            return JsonResponse({'newTask':model_to_dict(new_task)}, status=200)
         return redirect('tasks-list')
+
+class TaskDone(View):
+
+    def post(self,request, id):
+        taskCompleted = Task.objects.get(id=id)
+        taskCompleted.isDone = True
+        taskCompleted.save()
+        return JsonResponse({'taskCompleted':model_to_dict(taskCompleted)},status=200)

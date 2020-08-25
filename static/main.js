@@ -43,6 +43,14 @@ const app = new Vue({
                     vue_instance_ref.task = '';
                     //clear the input
                 });
+        },
+        taskAsDone(id, index) {
+            const vm = this;
+            sendRequest('' + id + '/done/', 'POST')
+                .then(function (response) {
+                    vm.tasks.splice(index, 1);
+                    vm.tasks.push(response.data.newTask);
+                });
         }
     }
 });
