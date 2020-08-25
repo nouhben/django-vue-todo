@@ -31,6 +31,22 @@ const app = new Vue({
 
             });
     },
+    // cahe based function the manpulates the already 
+    // rendred data
+    computed: {
+        taskList() {
+            function tasksComparator(taskA, taskB) {
+                if (taskA.isDone > taskB.isDone) {
+                    return 1;
+                }
+                if (taskA.isDone < taskB.isDone) {
+                    return -1;
+                }
+                return 0;
+            }
+            return this.tasks.sort(tasksComparator);
+        }
+    },
     methods: {
         createNewTask() {
             const vue_instance_ref = this;
@@ -49,8 +65,16 @@ const app = new Vue({
             sendRequest('' + id + '/done/', 'POST')
                 .then(function (response) {
                     vm.tasks.splice(index, 1);
-                    vm.tasks.push(response.data.newTask);
+                    vm.tasks.push(response.data.taskCompleted);
                 });
-        }
+        },
+        deleteTask(id, index) {
+            const vm = this;
+            sendRequest('' + id + '/delete/', 'POST')
+                .then(function (response) {
+                    vm.tasks.splice(index, 1);
+                });
+        },
+
     }
 });

@@ -22,12 +22,13 @@
     </form>
     <div class="mt-5">
         <div class="card my-1" 
-        v-for="(task, index) in tasks" 
+        v-for="(task, index) in taskList" 
         @click="taskAsDone(task.id, index)" 
         :class="{'task-done':task.isDone}">
             <div class="card-body">
                 {{ task.title }}
-                <button type="button" class="close float-right">
+                <button type="button" class="close float-right" 
+                @click.stop="deleteTask(task.id, index)">
                     <span>&times;</span>
                 </button>
             </div>
