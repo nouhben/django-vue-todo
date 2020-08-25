@@ -16,33 +16,32 @@ const app = new Vue({
     el: '#app',
     data: {
         task: '',
-        tasks: [
-            { title: 'Flutted & firebase' },
-        ]
+        tasks: [],
     },
     //use hooks to call the function at the event of page loaded
     created() {
-        var my_vue_object = this;
-        var r = sendRequest('', 'get')
-            // .then() ==. is a promise somthing like Future in Flutter
+        const vue_instance_ref = this;
+        const r = sendRequest('', 'get')
             .then(function (response) {
+                // .then() ==>. is a promise somthing like Future in Flutter
                 //we can not use 'this' here because it will refere to the annonymous function and not
                 // to Vue instance so i save a reference to my vue instance in a variable berfore defining the function
-                my_vue_object.tasks = response.data.tasks;
+
+                vue_instance_ref.tasks = response.data.tasks;
+
             });
     },
     methods: {
-        createTask() {
-            var my_vue_object = this;
-            var formData = new FormData();
-            //console.log(this.task);
-            //formData.append('title', this.task);
+        createNewTask() {
+            const vue_instance_ref = this;
+            const formData = new FormData();
             formData.append('title', this.task);
-            console.log(formData.values);
             sendRequest('', 'post', formData)
                 .then(function (response) {
-                    my_vue_object.tasks.push(response.data.task);// add the added task to the tasks
-                    my_vue_object.task = '';//clear the input
+                    vue_instance_ref.tasks.push(response.data.newTask);
+                    // add the added task to the tasks
+                    vue_instance_ref.task = '';
+                    //clear the input
                 });
         }
     }
